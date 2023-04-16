@@ -1,6 +1,6 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {Canvas, RoundedRect} from '@shopify/react-native-skia';
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Canvas, RoundedRect, Circle} from '@shopify/react-native-skia';
 
 function RoundedButton() {
   const width = 96;
@@ -20,10 +20,41 @@ function RoundedButton() {
   );
 }
 
-function App(): JSX.Element {
+function SkiaCircle() {
+  const r = 64;
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.row}>
+    <Canvas style={{width: r, height: r}}>
+      <Circle cx={r / 2} cy={r / 2} r={r / 2} color="blue" />
+    </Canvas>
+  );
+}
+
+function ViewCircle() {
+  const r = 64;
+
+  return (
+    <View
+      style={{
+        width: r,
+        height: r,
+        backgroundColor: 'blue',
+        borderRadius: r / 2,
+      }}
+    />
+  );
+}
+
+function Screen1() {
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        // Causing the clippping bug of the 3rd button.
+        alignItems: 'center',
+      }}>
+      <View style={{flexDirection: 'row', gap: 8}}>
         <RoundedButton />
         <RoundedButton />
         <RoundedButton />
@@ -32,18 +63,60 @@ function App(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+function Screen2() {
+  return (
+    <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
+      <View
+        style={{
+          marginBottom: 10,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+        }}>
+        <Text
+          style={{
+            fontSize: 21,
+            fontWeight: 'bold',
+          }}>
+          Skia Circles
+        </Text>
+      </View>
+      <View style={{flexDirection: 'row', gap: 8, marginBottom: 36}}>
+        <SkiaCircle />
+        <SkiaCircle />
+        <SkiaCircle />
+        <SkiaCircle />
+      </View>
 
-    // Causing the clippping bug of the 3rd button.
-    alignItems: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
+      <View
+        style={{
+          marginBottom: 10,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+        }}>
+        <Text
+          style={{
+            fontSize: 21,
+            fontWeight: 'bold',
+          }}>
+          Regular View Circles
+        </Text>
+      </View>
+      <View style={{flexDirection: 'row', gap: 8}}>
+        <ViewCircle />
+        <ViewCircle />
+        <ViewCircle />
+        <ViewCircle />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+function App(): JSX.Element {
+  const [activeScreen, setActiveScreen] = useState(2);
+
+  if (activeScreen === 1) {
+    return <Screen1 />;
+  } else if (activeScreen === 2) {
+    return <Screen2 />;
+  }
+}
 
 export default App;
