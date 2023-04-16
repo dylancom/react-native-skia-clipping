@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {Canvas, RoundedRect, Circle} from '@shopify/react-native-skia';
 
-function RoundedButton() {
+function SkiaRoundedButton() {
   const width = 96;
   const height = 48;
 
@@ -17,6 +17,15 @@ function RoundedButton() {
         color="blue"
       />
     </Canvas>
+  );
+}
+
+function RoundedButton() {
+  const width = 96;
+  const height = 48;
+
+  return (
+    <View style={{width, height, backgroundColor: 'blue', borderRadius: 12}} />
   );
 }
 
@@ -50,10 +59,40 @@ function Screen1() {
     <SafeAreaView
       style={{
         flex: 1,
-        justifyContent: 'center',
-        // Causing the clippping bug of the 3rd button.
         alignItems: 'center',
       }}>
+      <View
+        style={{
+          marginBottom: 10,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+        }}>
+        <Text
+          style={{
+            fontSize: 21,
+            fontWeight: 'bold',
+          }}>
+          Skia Rounded Buttons
+        </Text>
+      </View>
+      <View style={{flexDirection: 'row', gap: 8, marginBottom: 36}}>
+        <SkiaRoundedButton />
+        <SkiaRoundedButton />
+        <SkiaRoundedButton />
+      </View>
+
+      <View
+        style={{
+          marginBottom: 10,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+        }}>
+        <Text
+          style={{
+            fontSize: 21,
+            fontWeight: 'bold',
+          }}>
+          Regular View Rounded Buttons
+        </Text>
+      </View>
       <View style={{flexDirection: 'row', gap: 8}}>
         <RoundedButton />
         <RoundedButton />
@@ -110,7 +149,7 @@ function Screen2() {
 }
 
 function App(): JSX.Element {
-  const [activeScreen, setActiveScreen] = useState(2);
+  const [activeScreen, setActiveScreen] = useState(1);
 
   if (activeScreen === 1) {
     return <Screen1 />;
